@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>JANNAT AI</title>
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;min-height:100vh;color:white;
+ font-family:Arial,sans-serif;
+ background:radial-gradient(circle at top,#42205f,#100b20 65%,#05040c);
+}
+header{
+ display:flex;justify-content:space-between;
+ padding:20px;align-items:center;
+}
+.logo{font-size:24px;font-weight:bold;color:#f1a7ff}
+.online{color:#55ffad}
+main{padding:15px;max-width:500px;margin:auto}
+.avatar{
+ min-height:350px;border-radius:25px;
+ display:flex;align-items:center;justify-content:center;
+ flex-direction:column;text-align:center;
+ background:linear-gradient(145deg,#46235c,#171329);
+ border:1px solid #b35cff;
+ box-shadow:0 0 25px #8b32ff55;
+}
+.face{font-size:110px;filter:drop-shadow(0 0 15px #dc7aff)}
+.avatar h2{margin:5px;color:#ffc7ff}
+.avatar p{color:#ddd}
+button{
+ border:1px solid #bc68ff;
+ background:#24143c;color:white;
+ padding:15px;border-radius:16px;
+ font-size:16px;cursor:pointer;
+}
+button:active{background:#7137a3}
+.mic{
+ width:85px;height:85px;border-radius:50%;
+ font-size:30px;background:linear-gradient(135deg,#a12aff,#5625a0);
+}
+.controls{
+ display:grid;grid-template-columns:1fr 1fr;
+ gap:12px;margin-top:20px;
+}
+.chat{
+ background:#211638;border-radius:18px;
+ padding:18px;margin-top:20px;
+ border:1px solid #653a8a;
+}
+.chat p{color:#f1d7ff}
+.apps{
+ display:grid;grid-template-columns:1fr 1fr;
+ gap:10px;margin-top:15px
+}
+.apps button{background:#18213c}
+.status{text-align:center;color:#bba6d0;margin:15px}
+</style>
+</head>
+<body>
+<header>
+ <div class="logo">👑 JANNAT AI</div>
+ <div class="online">● ONLINE</div>
+</header>
+<main>
+ <section class="avatar">
+  <div class="face">👩🏻</div>
+  <h2>জান্নাত ❤️</h2>
+  <p>হ্যালো রাজ! কেমন আছো?</p>
+  <p>আমি তোমার Personal AI Assistant</p>
+  <button class="mic" onclick="listen()">🎙️</button>
+  <p id="voice">আমার সঙ্গে কথা বলো</p>
+ </section>
+
+ <section class="chat">
+  <b>💗 JANNAT AI CHAT</b>
+  <p id="answer">হ্যালো রাজ! আমি তোমার কথা শুনছি।</p>
+ </section>
+
+ <section class="controls">
+  <button onclick="speak('হ্যালো রাজ, আমি জান্নাত।')">🔊 কথা বলো</button>
+  <button onclick="listen()">🎙️ Voice Command</button>
+  <button onclick="location.href='/api/status'">⚙️ System Status</button>
+  <button onclick="speak('আমি জান্নাত, তোমার AI Assistant।')">❤️ পরিচয়</button>
+ </section>
+
+ <h3>📱 Social Apps</h3>
+ <section class="apps">
+  <button onclick="openApp('whatsapp')">WhatsApp</button>
+  <button onclick="openApp('facebook')">Facebook</button>
+  <button onclick="openApp('instagram')">Instagram</button>
+  <button onclick="openApp('telegram')">Telegram</button>
+ </section>
+ <div class="status">JANNAT AI • Version 1.0.0</div>
+</main>
+
+<script>
+function speak(text){
+ const msg=new SpeechSynthesisUtterance(text);
+ msg.lang='bn-IN';
+ msg.rate=0.9;
+ speechSynthesis.speak(msg);
+}
+function listen(){
+ const Speech=window.SpeechRecognition||window.webkitSpeechRecognition;
+ if(!Speech){
+  document.getElementById('voice').innerText='এই ব্রাউজারে Voice Recognition নেই';
+  return;
+ }
+ const rec=new Speech();
+ rec.lang='bn-IN';
+ rec.onstart=()=>document.getElementById('voice').innerText='শুনছি...';
+ rec.onresult=e=>{
+  const text=e.results[0][0].transcript;
+  document.getElementById('answer').innerText='তুমি বলেছ: '+text;
+  speak('তুমি বলেছ '+text);
+ };
+ rec.start();
+}
+function openApp(app){
+ const links={
+ whatsapp:'https://wa.me/',
+ facebook:'https://www.facebook.com/',
+ instagram:'https://www.instagram.com/',
+ telegram:'https://t.me/'
+ };
+ window.open(links[app],'_blank');
+}
+</script>
+</body>
+</html>
